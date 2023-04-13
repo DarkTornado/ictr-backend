@@ -4,9 +4,19 @@ header('Access-Control-Allow-Origin: *'); //임시
 
 $line = $_REQUEST['line'];
 $data = read_time_table($line);
+$stn_names = [
+    ['계양', '귤현', '박촌', '임학', '계산', '경인교대입구', '작전', '갈산', '부평구청', '부평시장', '부평', '동수', '부평삼거리', '간석오거리', '인천시청', '예술회관', '인천터미널', '문학경기장', '선학', '신연수', '원인재', '동춘', '동막', '캠퍼스타운', '테크노파크', '지식정보단지', '인천대입구', '센트럴파크', '국제업무지구', '송도달빛축제공원'],
+    ['검단오류', '왕길', '검단사거리', '마전', '완정', '독정', '검암', '검바위', '아시아드경기장', '서구청', '가정', '가정중앙시장', '석남', '서부여성회관', '인천가좌', '가재울', '주안국가산단', '주안', '시민공원', '석바위시장', '인천시청', '석천사거리', '모래내시장', '만수', '남동구청', '인천대공원', '운연']
+][$line - 1];
 
 $result = [];
-echo $data;
+for ($n = 0; $n < count($stn_names); $n++) {
+    $result[$n] = ['stn' => $stn_names[$n], 'up' => 0, 'dn' => 0];
+}
+
+//var_dump($result);
+
+
 
 function read_time_table($line) {
     $day = date('w');
@@ -21,7 +31,6 @@ function read_time_table($line) {
     if ($size > 0){
         $value = fread($fp, $size);
         fclose($fp);
-        return $value;
         return json_decode($value, true);
     } else {
         echo '{"error":true,"msg":"Cannot read file"}';
