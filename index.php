@@ -17,6 +17,14 @@ for ($n = 0; $n < count($stn_names); $n++) {
 //var_dump($result);
 
 
+function time2sec($time) {
+    $t = explode(':', time);
+    $t[0] = (int)$t[0];
+    $t[1] = (int)$t[1];
+    if (count($t) == 3) $t[2] = (int)$t[2];
+    else $t[2] = 0;
+    return 60*60*$t[0] + 60*$t[1] + $t[2];
+}
 
 function read_time_table($line) {
     $day = date('w');
@@ -38,6 +46,5 @@ function read_time_table($line) {
         exit;
     }
 }
-
 
 ?>
