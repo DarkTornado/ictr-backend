@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *'); //임시
+date_default_timezone_set('Asia/Seoul');
 
 $line = $_REQUEST['line'];
 $data = read_time_table($line);
@@ -14,8 +15,39 @@ for ($n = 0; $n < count($stn_names); $n++) {
     $result[$n] = ['stn' => $stn_names[$n], 'up' => 0, 'dn' => 0];
 }
 
-//var_dump($result);
+$now = 60*60*date('H') + 60*date('i') + date('s');
 
+foreach($data as $train => $times) {
+    $time = $times[count($times) - 1]['time'];
+    $time = time2sec($time);
+    
+    if ($time < $now) continue;
+    $time = time2sec($times[0]['time']);
+    if ($now < $time) continue;
+
+    $train = (int)$train;
+    $ud = $train % 2 == 0 ? 'up' : 'dn';
+
+    $stn = get_train_pos($times, $now);
+    $index = array_search($stn, $stn_names);
+
+    // if ($index == false) {
+    //     echo '이상해요: '.$stn;
+    // }
+
+    $result[$index][$ud] = 1;    
+}
+
+echo json_encode($result, JSON_UNESCAPED_UNICODE);
+
+function get_train_pos($times, $now) {
+    for ($n = count($times) - 1; $n >=0; $n--) {
+        $time = time2sec($times[$n]['time']);
+        if ($time == $now) return $times[$n]['stn'];
+        if ($time < $now) return $times[$n + 1]['stn'];
+    }
+    return -1;
+}
 
 function time2sec($time) {
     $t = explode(':', $time);
