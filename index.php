@@ -18,7 +18,7 @@ for ($n = 0; $n < count($stn_names); $n++) {
 
 
 function time2sec($time) {
-    $t = explode(':', time);
+    $t = explode(':', $time);
     $t[0] = (int)$t[0];
     $t[1] = (int)$t[1];
     if (count($t) == 3) $t[2] = (int)$t[2];
