@@ -62,7 +62,7 @@ function read_time_table($line) {
     $day = date('w');
 
     /* 주말/평일 구분 */
-    if ($day == 0 || $day == 6) $file_name = 'timetable/line.'.$line.'_ends.json';
+    if ($day == 0 || $day == 6) $file_name = 'timetable/line'.$line.'_ends.json';
     else $file_name = 'timetable/line'.$line.'_days.json';
 
     /* 시간표 파일 읽기 */
