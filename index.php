@@ -35,7 +35,7 @@ foreach($data as $train => $times) {
     //     echo '이상해요: '.$stn;
     // }
 
-    $result[$index][$ud] = 1;    
+    $result[$index][$ud] = 1;
 }
 
 echo json_encode($result, JSON_UNESCAPED_UNICODE);
