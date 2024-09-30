@@ -2,6 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *'); //임시
 date_default_timezone_set('Asia/Seoul');
+ini_set('display_errors', '1');
 
 $line = $_REQUEST['line'];
 $data = read_time_table($line);
@@ -25,8 +26,19 @@ foreach($data as $train => $times) {
     $time = time2sec($times[0]['time']);
     if ($now < $time) continue;
 
-    $train = (int)$train;
-    $ud = $train % 2 == 0 ? 'up' : 'dn';
+    // $t = explode("", $train);
+    $t = str_split($train);
+    // echo $t[0];
+    if ($t[0] == 'U') {
+        $ud = 'up';
+    }
+    else if ($t[0] == 'D') {
+        $ud = 'dn';
+    }
+    else {
+        $train = (int)$train;
+        $ud = $train % 2 == 0 ? 'up' : 'dn';
+    }
 
     $stn = get_train_pos($times, $now);
     $index = array_search($stn, $stn_names);
